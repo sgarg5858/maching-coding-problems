@@ -22,7 +22,7 @@ const getEmailSuggestions = (keyword:string)  =>{
 
 //Debounce Polyfill
 
-const debounce = (fn:Function,delay=0)=>{
+const debounce = (fn:Function,delay=200)=>{
     let timer:any|undefined;
     return function()
     {

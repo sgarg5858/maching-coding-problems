@@ -20,7 +20,7 @@ const getEmailSuggestions = (keyword) => {
         .catch((error) => []);
 };
 //Debounce Polyfill
-const debounce = (fn, delay = 0) => {
+const debounce = (fn, delay = 200) => {
     let timer;
     return function () {
         const self = this;
