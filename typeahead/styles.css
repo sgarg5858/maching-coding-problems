@@ -1,0 +1,38 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+
+#search-box{
+    width: 400px;
+    height: 60px;
+    font-size: 24px;
+}
+#search-box:focus{
+    border: 2px dotted maroon;
+}
+#suggestion-box{
+    width: 400px;
+    height: min-content;
+    max-height: 300px;
+    overflow-y: scroll;
+    border: 1px solid silver;
+}
+.hide{
+    display: none;
+}
+.show{
+    display: block;
+}
+.option{
+    width: 400px;
+    border-bottom: 1px solid silver;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
