@@ -27,12 +27,11 @@ const getEmailSuggestions = (keyword) => {
 //Debounce Polyfill
 const debounce = (fn, delay = 500) => {
     let timer;
-    return function () {
+    return function (...args) {
         const self = this;
-        const args = arguments;
         clearTimeout(timer);
         timer = setTimeout(() => {
-            fn.apply(self, arguments);
+            fn.apply(self, args);
         }, delay);
     };
 };
@@ -111,7 +110,9 @@ const handleSuggestionSelect = (event) => {
 };
 (() => {
     if (inputBox && suggestionsBox) {
-        inputBox.addEventListener('input', debounce(handleInput));
+        inputBox.addEventListener('input', ((event) => {
+            debounce(handleInput(event));
+        }));
         suggestionsBox.addEventListener('click', handleSuggestionSelect);
     }
 })();
