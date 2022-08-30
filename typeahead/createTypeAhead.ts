@@ -10,6 +10,12 @@ interface IComment{
 let contoller = new AbortController();
 let signal = contoller.signal;
 
+const callAbortAndRenewController = () =>{
+    contoller.abort();
+    contoller = new AbortController();
+    signal=contoller.signal;
+}
+
 const getEmailSuggestions = (keyword:string)  =>{
 
    return fetch(`https://jsonplaceholder.typicode.com/comments?`+new URLSearchParams({
@@ -71,9 +77,9 @@ const renderSuggestions = (suggestions:string[]) =>{
 const handleSearch = async (value:string) => {
    try {
 
-    contoller.abort();
-    contoller = new AbortController();
-    signal=contoller.signal;
+    //Do this before making an api call
+    callAbortAndRenewController();
+
     const suggestions = await getEmailSuggestions(value);
     console.log(suggestions);
     renderSuggestions(suggestions);
