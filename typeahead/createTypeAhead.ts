@@ -5,7 +5,9 @@ interface IComment{
     email:string;
     body:string;
 }
-//API CALL
+
+
+//API CALL & Abort Controller!
 
 let contoller = new AbortController();
 let signal = contoller.signal;
@@ -28,7 +30,7 @@ const getEmailSuggestions = (keyword:string)  =>{
 
 //Debounce Polyfill
 
-const debounce = (fn:Function,delay=200)=>{
+const debounce = (fn:Function,delay=500)=>{
     let timer:any|undefined;
     return function()
     {
@@ -38,6 +40,24 @@ const debounce = (fn:Function,delay=200)=>{
         timer = setTimeout(()=>{
         fn.apply(self,arguments);
        },delay) 
+    }
+}
+
+const throttle = (fn:Function,delay=500) => {
+    let inThrottle=false;
+    return function()
+    {
+        if(!inThrottle)
+        {
+            const that=this;
+            const args=arguments;
+            fn.apply(self,arguments);
+            inThrottle=true;
+            setTimeout(()=>{
+                inThrottle=false;
+            },delay)
+        }
+
     }
 }
 

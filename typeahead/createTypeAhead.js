@@ -7,9 +7,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-//API CALL
+//API CALL & Abort Controller!
 let contoller = new AbortController();
 let signal = contoller.signal;
+const callAbortAndRenewController = () => {
+    contoller.abort();
+    contoller = new AbortController();
+    signal = contoller.signal;
+};
 const getEmailSuggestions = (keyword) => {
     return fetch(`https://jsonplaceholder.typicode.com/comments?` + new URLSearchParams({
         query: keyword
@@ -20,7 +25,7 @@ const getEmailSuggestions = (keyword) => {
         .catch((error) => []);
 };
 //Debounce Polyfill
-const debounce = (fn, delay = 200) => {
+const debounce = (fn, delay = 500) => {
     let timer;
     return function () {
         const self = this;
@@ -29,6 +34,20 @@ const debounce = (fn, delay = 200) => {
         timer = setTimeout(() => {
             fn.apply(self, arguments);
         }, delay);
+    };
+};
+const throttle = (fn, delay = 500) => {
+    let inThrottle = false;
+    return function () {
+        if (!inThrottle) {
+            const that = this;
+            const args = arguments;
+            fn.apply(self, arguments);
+            inThrottle = true;
+            setTimeout(() => {
+                inThrottle = false;
+            }, delay);
+        }
     };
 };
 //Get Reference to DOM elements
@@ -61,9 +80,8 @@ const renderSuggestions = (suggestions) => {
 };
 const handleSearch = (value) => __awaiter(this, void 0, void 0, function* () {
     try {
-        contoller.abort();
-        contoller = new AbortController();
-        signal = contoller.signal;
+        //Do this before making an api call
+        callAbortAndRenewController();
         const suggestions = yield getEmailSuggestions(value);
         console.log(suggestions);
         renderSuggestions(suggestions);
